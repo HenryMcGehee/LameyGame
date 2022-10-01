@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Camera cam;
     public float moveSpeed;
+    public float lookSpeed;
     public float jumpSpeed;
 
     // Start is called before the first frame update
