@@ -5,32 +5,69 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
+    public Animator anim;
     private Camera cam;
     public float moveSpeed;
     public float lookSpeed;
     public float jumpSpeed;
+    public float _maxAngularVelocity;
+    public float acceleration;
+    public float maxSpeed;
+    
+    float groundCheck;
+    public bool grounded;
+    int velocity;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.maxAngularVelocity = _maxAngularVelocity;
+        velocity = Animator.StringToHash("Move");
         cam = Camera.main; 
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Physics Movement
+        
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         
         Quaternion r = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0);
-        Vector3 move = new Vector3(v  * Time.deltaTime, 0, -1 * h  * Time.deltaTime);
+        Vector3 move = new Vector3(v, 0, -1 * h);
         Vector3 final = r * move;
-        rb.AddTorque(Vector3.Normalize(final) * moveSpeed);
+        if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        {
+            if(moveSpeed < maxSpeed)
+                moveSpeed += acceleration;
+        }
+        else{
+            moveSpeed = 100;
+        }
+        rb.AddTorque(final * moveSpeed * Time.deltaTime);
 
-        if(Input.GetButtonDown("Jump"))
+        // Animation Controls
+
+        float vel = Mathf.Clamp(rb.velocity.magnitude * 0.2f, 0f, 1f);
+
+        anim.SetFloat(velocity, vel);
+        
+        if(Physics.Raycast(transform.position, new Vector3(0, -1, 0), 2f))
+        {
+            grounded = true;
+            anim.SetBool("Grounded", true);
+        }
+        else{
+            grounded = false;
+            anim.SetBool("Grounded", false);
+        }
+
+        if(Input.GetButtonDown("Jump") && grounded)
         {
             Debug.Log("jumped");
+            anim.Play("Jump");
             rb.AddForce(new Vector3(0, 1, 0) * jumpSpeed);
         }
 
