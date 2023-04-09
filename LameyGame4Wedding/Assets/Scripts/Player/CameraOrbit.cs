@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraOrbit : MonoBehaviour
 {
+	[SerializeField] string HorizontalAxis;
+	[SerializeField] string VerticalAxis;
     public Transform focus;
     Vector3 focusPoint, previousFocusPoint;
     public float distance = 5f;
@@ -95,8 +97,8 @@ public class CameraOrbit : MonoBehaviour
 
     bool ManualRotation() {
 		Vector2 input = new Vector2(
-			Input.GetAxis("Mouse Y") * -1,
-			Input.GetAxis("Mouse X")
+			Input.GetAxis(VerticalAxis),
+			Input.GetAxis(HorizontalAxis)
 		);
 		const float e = 0.001f;
 		if (input.x < -e || input.x > e || input.y < -e || input.y > e) {

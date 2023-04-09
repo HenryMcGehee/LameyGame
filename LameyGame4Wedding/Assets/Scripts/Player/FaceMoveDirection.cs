@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FaceMoveDirection : MonoBehaviour
 {
+    [SerializeField] string moveX;
+    [SerializeField] string moveY;
     public float rotationSpeed;
     private Camera cam;
     private Quaternion lookRotation;
@@ -12,13 +14,19 @@ public class FaceMoveDirection : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        string[] c = Input.GetJoystickNames();
+        for (int i = 0; i < c.Length; i++)
+        {
+            Debug.Log(c[i]);
+            
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxisRaw(moveX);
+        float v = Input.GetAxisRaw(moveY);
         
         Quaternion r = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0);
         Vector3 move = new Vector3(h, 0,v);

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] string moveX;
+    [SerializeField] string moveY;
+    [SerializeField] string jumpInput;
     private Rigidbody rb;
     public Animator anim;
     private Camera cam;
@@ -32,13 +35,13 @@ public class PlayerController : MonoBehaviour
     {
         // Physics Movement
         
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxisRaw(moveX);
+        float v = Input.GetAxisRaw(moveY);
         
         Quaternion r = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0);
         Vector3 move = new Vector3(v, 0, -1 * h);
         Vector3 final = r * move;
-        if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if(Input.GetAxisRaw(moveX) != 0 || Input.GetAxisRaw(moveY) != 0)
         {
             if(moveSpeed < maxSpeed)
                 moveSpeed += acceleration;
@@ -64,7 +67,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Grounded", false);
         }
 
-        if(Input.GetButtonDown("Jump") && grounded)
+        if(Input.GetButtonDown(jumpInput) && grounded)
         {
             Debug.Log("jumped");
             anim.Play("Jump");
