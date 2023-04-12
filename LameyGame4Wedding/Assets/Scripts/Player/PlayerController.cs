@@ -1,25 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] string moveX;
-    [SerializeField] string moveY;
-    [SerializeField] string jumpInput;
+    public Transform parent;
+    public Sprite portrait;
     private Rigidbody rb;
     public Animator anim;
-    private Camera cam;
+    [SerializeField] private Camera cam;
     public float moveSpeed;
     public float lookSpeed;
     public float jumpSpeed;
     public float _maxAngularVelocity;
     public float acceleration;
     public float maxSpeed;
+    public bool canMove;
     
     float groundCheck;
     public bool grounded;
     int velocity;
+    [SerializeField] private Vector2 movementInput = Vector2.zero;
+    private bool jumped = false;
+    GameObject[] spawns;
 
     // Start is called before the first frame update
     void Start()
@@ -27,52 +31,72 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = _maxAngularVelocity;
         velocity = Animator.StringToHash("Move");
-        cam = Camera.main; 
+        spawns = GameObject.FindGameObjectsWithTag("Spawn");
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        jumped = context.action.triggered;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Physics Movement
-        
-        float h = Input.GetAxisRaw(moveX);
-        float v = Input.GetAxisRaw(moveY);
-        
-        Quaternion r = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0);
-        Vector3 move = new Vector3(v, 0, -1 * h);
-        Vector3 final = r * move;
-        if(Input.GetAxisRaw(moveX) != 0 || Input.GetAxisRaw(moveY) != 0)
+        if(canMove)
         {
-            if(moveSpeed < maxSpeed)
-                moveSpeed += acceleration;
-        }
-        else{
-            moveSpeed = 100;
-        }
-        rb.AddTorque(final * moveSpeed * Time.deltaTime);
+            float h = movementInput.x;
+            float v = movementInput.y;
+            
+            Quaternion r = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0);
+            Vector3 move = new Vector3(v, 0, -1 * h);
+            Vector3 final = r * move;
+            if(movementInput.x != 0 || movementInput.y != 0)
+            {
+                if(moveSpeed < maxSpeed)
+                    moveSpeed += acceleration;
+            }
+            else{
+                moveSpeed = 100;
+            }
+            rb.AddTorque(final * moveSpeed * Time.deltaTime);
 
-        // Animation Controls
+            // Animation Controls
 
-        float vel = Mathf.Clamp(rb.velocity.magnitude * 0.2f, 0f, 1f);
+            float vel = Mathf.Clamp(rb.velocity.magnitude * 0.2f, 0f, 1f);
 
-        anim.SetFloat(velocity, vel);
-        
-        if(Physics.Raycast(transform.position, new Vector3(0, -1, 0), 2f))
-        {
-            grounded = true;
-            anim.SetBool("Grounded", true);
+            anim.SetFloat(velocity, vel);
+            
+            if(Physics.Raycast(transform.position, new Vector3(0, -1, 0), 2f))
+            {
+                grounded = true;
+                anim.SetBool("Grounded", true);
+            }
+            else{
+                grounded = false;
+                anim.SetBool("Grounded", false);
+            }
+
+            if(jumped && grounded)
+            {
+                Debug.Log("jumped");
+                anim.Play("Jump");
+                rb.AddForce(new Vector3(0, 1, 0) * jumpSpeed);
+            }
         }
-        else{
-            grounded = false;
-            anim.SetBool("Grounded", false);
-        }
+    }
 
-        if(Input.GetButtonDown(jumpInput) && grounded)
-        {
-            Debug.Log("jumped");
-            anim.Play("Jump");
-            rb.AddForce(new Vector3(0, 1, 0) * jumpSpeed);
-        }
-
+    public void Respawn()
+    {
+        Debug.Log(" fucccc");
+        rb.MovePosition(spawns[Random.Range(0, spawns.Length)].transform.position);
+        // canMove = false;
+        // yield return new WaitForSeconds(0.1f);
+        // parent.position = spawns[Random.Range(0, spawns.Length)].transform.position;
+        // yield return new WaitForSeconds(0.1f);
+        // canMove = true;
     }
 }

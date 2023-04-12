@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraOrbit : MonoBehaviour
 {
@@ -36,12 +37,17 @@ public class CameraOrbit : MonoBehaviour
 	}
     [SerializeField]
 	LayerMask obstructionMask = -1;
+	private Vector2 movementInput = Vector2.zero;
     // Start is called before the first frame update
     void Awake()
     {
         regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
         transform.localRotation = Quaternion.Euler(orbitAngles);
+    }
+	public void OnCamera(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
     }
 
     // Update is called once per frame
@@ -97,8 +103,8 @@ public class CameraOrbit : MonoBehaviour
 
     bool ManualRotation() {
 		Vector2 input = new Vector2(
-			Input.GetAxis(VerticalAxis),
-			Input.GetAxis(HorizontalAxis)
+			-1*movementInput.y,
+			movementInput.x
 		);
 		const float e = 0.001f;
 		if (input.x < -e || input.x > e || input.y < -e || input.y > e) {
