@@ -6,12 +6,33 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PlayerHandling.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
     path: Assets/Scenes/LevelSelect.unity
     guid: e3276b476bd79334cb06e90dae6658ec
   - enabled: 1
-    path: Assets/Scenes/Battle1.unity
+    path: Assets/Scenes/TheLineR.unity
+    guid: 339f3153f0238914b96c475c6575b7c2
+  - enabled: 1
+    path: Assets/Scenes/TheIslandsR.unity
+    guid: 0133d9697bb000f45b70382b0b8e0d72
+  - enabled: 1
+    path: Assets/Scenes/TheSpiralR.unity
+    guid: 910128cdd5957f34b9858f3e43105677
+  - enabled: 1
+    path: Assets/Scenes/TheWiggleR.unity
+    guid: 65652453a1d0601429e5727095730ffb
+  - enabled: 1
+    path: Assets/Scenes/TheNutR.unity
     guid: 7c6ceeda6381384459efec600a53cff8
+  - enabled: 1
+    path: Assets/Scenes/Battle1.unity
+    guid: 46cd1bb9bb07eca45a0023411a382200
+  - enabled: 1
+    path: Assets/Scenes/Battle2.unity
+    guid: 9c90b199e5c165d4c97519957d1a9c68
+  - enabled: 1
+    path: Assets/Scenes/Battle3.unity
+    guid: fbc4eac1da6366c4689c6b2fdf7bad48
+  - enabled: 1
+    path: Assets/Scenes/Battle4.unity
+    guid: b29a887a406f7ef49ac4868b26962cae
   m_configObjects: {}

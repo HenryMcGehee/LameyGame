@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public Transform parent;
     public Sprite portrait;
-    private Rigidbody rb;
+    public Rigidbody rb;
     public Animator anim;
     [SerializeField] private Camera cam;
     public float moveSpeed;
@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
     public void Respawn()
     {
         Debug.Log(" fucccc");
+        rb.velocity = Vector3.zero;
         rb.MovePosition(spawns[Random.Range(0, spawns.Length)].transform.position);
         // canMove = false;
         // yield return new WaitForSeconds(0.1f);

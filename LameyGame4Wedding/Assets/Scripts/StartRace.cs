@@ -20,10 +20,12 @@ public class StartRace : MonoBehaviour
         players[0].GetComponent<SetLook>().jamie = true;
         players[0].GetComponent<SetLook>().UpdateLook();
         players[0].transform.position = spawns[0].transform.position;
+        players[0].GetComponentInChildren<PlayerController>().rb.velocity = Vector3.zero;
         // players[0].transform.rotation = Quaternion.Euler(spawns[0].transform.rotation.x, spawns[0].transform.rotation.y, spawns[0].transform.rotation.z);
         players[1].GetComponent<SetLook>().jamie = false;
         players[1].GetComponent<SetLook>().UpdateLook();
         players[1].transform.position = spawns[1].transform.position;
+        players[1].GetComponentInChildren<PlayerController>().rb.velocity = Vector3.zero;
         // players[1].transform.rotation = Quaternion.Euler(spawns[1].transform.rotation.x, spawns[1].transform.rotation.y, spawns[1].transform.rotation.z);
         cam.SetActive(false);
         startUI.SetActive(false);

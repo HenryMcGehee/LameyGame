@@ -472,7 +472,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e30a1d013e44fc4994fb02350f0fdb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portrait: {fileID: 21300000, guid: 08c91a7677e66844281a99aaf6ea36f1, type: 3}
+  parent: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 8bb329c63c55af34f9403d1ad39d9e12, type: 3}
   anim: {fileID: 7447952739128970651}
   cam: {fileID: 7447952739337992299}
   moveSpeed: 500
